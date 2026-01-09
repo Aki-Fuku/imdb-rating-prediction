@@ -81,7 +81,12 @@ This project utilizes two primary data sources, merged on **normalized movie tit
 
 After cleaning and merging, a **sample of 500,000 reviews** was used for analysis and modeling. This final dataset is referred to as `imdb_reviews_500k.csv`.
 
-Due to GitHub's file size limits, the raw data files and the final dataset are not included in this repository. The dataset can be reproduced by downloading the datasets and running the scripts in the jupyter notebook.
+Due to GitHub's file size limits, the raw data files (JSON and TSV files) are not
+included in this repository.
+
+The final processed dataset used for analysis and modeling,
+`imdb_reviews_500k.csv`, is included and can be directly loaded to reproduce
+all results presented in the notebook.
 
 ### Data Structure
 
