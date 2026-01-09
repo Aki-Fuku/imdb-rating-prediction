@@ -1,18 +1,75 @@
 # IMDb Rating Prediction from Movie Reviews
 
+# Table of Contents
+
+- [IMDb Rating Prediction from Movie Reviews](#imdb-rating-prediction-from-movie-reviews)
+- [Table of Contents](#table-of-contents)
+  - [Project Overview](#project-overview)
+  - [Research Question](#research-question)
+  - [Installation \& Usage](#installation--usage)
+  - [Technologies \& Libraries](#technologies--libraries)
+  - [Datasets](#datasets)
+    - [Data Structure](#data-structure)
+  - [Project Pipeline](#project-pipeline)
+    - [Step 1: Data Collection \& Cleaning](#step-1-data-collection--cleaning)
+    - [Step 2: Data Cleaning \& Management](#step-2-data-cleaning--management)
+    - [Step 3: Visualizations](#step-3-visualizations)
+    - [Step 4: Modeling](#step-4-modeling)
+    - [Linear Regressions](#linear-regressions)
+    - [TF-IDF \& Linear Regression](#tf-idf--linear-regression)
+    - [Random Forest](#random-forest)
+  - [Model Comparison Summary](#model-comparison-summary)
+  - [Team Members](#team-members)
+
 ## Project Overview
 
 This project investigates whether IMDb ratings can be predicted from reviews and explores how metadata and reviewer information enhance prediction accuracy.
 
 This is a data science project for the ECON-2206 Data Management course at HEC Liège, combining natural language processing (NLP), machine learning, and data engineering techniques.
 
----
-
 ## Research Question
 
 Can IMBd ratings be accurately predicted using the textual content of movie reviews and does adding movie metadata and reviewer information improve prediction accuracy compared to sentiment analysis alone?
 
----
+## Installation & Usage
+
+1. Open the Jupyter notebook:
+   ```bash
+   jupyter notebook final_project.ipynb
+   ```
+
+2. Execute cells sequentially:
+   - **Step 1**: Data Cleaning & Collection
+   - **Step 2**: Data Management
+   - **Step 3**: Visualizations
+   - **Step 4**: Modelling
+
+## Technologies & Libraries
+
+**Data Processing & Analysis**:
+- `polars`: High-performance data loading and manipulation
+- `pandas`: Data manipulation and analysis
+- `numpy`: Numerical computing
+
+**Text Processing & NLP**:
+- `nltk`: VADER sentiment analyzer
+- `textblob`: Subjectivity analysis
+- `unidecode`: Unicode normalization
+- `sklearn.feature_extraction.text.TfidfVectorizer`: Feature extraction
+
+**Machine Learning**:
+- `sklearn.linear_model.LinearRegression`: Linear regression models
+- `sklearn.ensemble.RandomForestRegressor`: Ensemble learning method
+- `sklearn.preprocessing.StandardScaler`: Feature scaling
+- `sklearn.preprocessing.OneHotEncoder`: Categorical encoding
+- `sklearn.compose.ColumnTransformer`: Pipeline feature preprocessing
+- `sklearn.pipeline.Pipeline`: Model pipelines
+- `sklearn.model_selection.train_test_split`: Data splitting
+- `sklearn.metrics`: Performance evaluation (RMSE, R²)
+
+**Visualization**:
+- `matplotlib.pyplot`: Plotting library
+- `seaborn`: Statistical data visualization
 
 ## Datasets 
 
@@ -146,6 +203,50 @@ The third model uses reviewer data; in addition to textual and metadata variable
 
 ### TF-IDF & Linear Regression
 
+ Unlike previous NLP models using pre-computed sentiment scores, this model directly analyzes the importance and uniqueness of words within review texts.
 
+**Configuration**:
+
+- Vectorizer: TfidfVectorizer with maximum 5,000 features
+- Minimum document frequency: 5 (words appearing in fewer than 5 reviews excluded)
+- Preprocessing: English stopword removal
+- Regression: Linear Regression on the TF-IDF feature matrix
+
+**Results**:
+
+- RMSE: 1.975
+- R² Score: 0.561
+
+**Conclusion**:
+
+The TF-IDF model explains 56.1% of variance in ratings, representing a substantial improvement over the linear regression with only textual variables (RMSE: 2.67, R²: 0.196). However, it remains inferior to the linear regression with metadata and reviewer data (R²: 0.776) because the model needs context and the behavior of the reviewer dominates.
 
 ### Random Forest
+
+Random Forest is a non-linear program, used to capture potential non-linear relationships that could not be portrayed in earlier models.
+
+**Configuration**:
+- Number of estimators: 200 trees
+- Max depth: None (trees grow until all samples are classified)
+- Random state: 42 (for reproducibility)
+
+**Results**:
+- RMSE: **1.348**
+- R² Score: **0.795**
+
+**Conclusion**: The Random Forest achieves the best predictive accuracy of all models tested, explaining 79.5% of variance in movie ratings while its prediction is off by only 1.35 points.
+
+## Model Comparison Summary
+
+| Model | Features | RMSE | R² | Use Case |
+|-------|----------|------|-----|----------|
+| **Simple Linear Regression** | Sentiment only | 2.673 | 0.196 | Baseline; demonstrates text weakness |
+| **Linear + Metadata** | + Movie context | 2.643 | 0.212 | Shows that metadata has minimal value |
+| **Full Linear Regression** | + Reviewer behavior | 1.409 | 0.776 | Shows that reviewer data is a major explanotary variable |
+| **TF-IDF Linear Regression** | Raw text vectorization | 1.975 | 0.561 | Word importance analysis |
+| **Random Forest** | All features (non-linear) | 1.348 | 0.795 | Confirms that reviewer-related features largely impacts rating prediction|
+
+## Team Members
+
+* Megan Hardy (s191198)
+* Hideaki Fukuyama (s221591)
