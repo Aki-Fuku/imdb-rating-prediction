@@ -1,0 +1,10 @@
+pandas
+polars
+numpy
+matplotlib
+seaborn
+nltk
+textblob
+scikit-learn
+unidecode
+
